@@ -286,15 +286,11 @@
     .motivos__grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+      gap: 20px;
       margin-top: 48px;
     }
-    @media (max-width: 480px) {
-      .motivos__grid { gap: 10px; }
-      .motivo { padding: 22px 16px; }
-      .motivo__title { font-size: 1rem; }
-      .motivo__text { font-size: 0.85rem; }
-      .motivo__icon { font-size: 1.6rem; margin-bottom: 10px; }
+    @media (max-width: 720px) {
+      .motivos__grid { grid-template-columns: 1fr; gap: 16px; }
     }
     .motivo {
       background: var(--branco);
@@ -762,6 +758,61 @@
       display: block;
     }
     .section--verde .section-label { color: var(--dourado-claro); }
+
+    /* ════════════════════════════════════════════════════════
+       MOBILE RESPONSIVO — revisão geral
+    ════════════════════════════════════════════════════════ */
+    @media (max-width: 640px) {
+
+      /* Seções: menos padding vertical */
+      .section { padding-block: 48px 40px; }
+
+      /* Hero */
+      .hero__content { padding-block: 100px 60px; }
+      .hero__sub { font-size: 0.95rem; }
+      .hero__ctas { flex-direction: column; align-items: flex-start; }
+      .hero__ctas .btn { width: 100%; justify-content: center; }
+
+      /* Diferenciais: 2 colunas no mobile */
+      .diferenciais__grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .diferencial { padding: 20px 14px; }
+      .diferencial__title { font-size: 0.88rem; }
+      .diferencial__text { font-size: 0.8rem; }
+      .diferencial__icon { width: 40px; height: 40px; font-size: 1.1rem; }
+
+      /* Galeria: 2 colunas */
+      .galeria__grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .galeria__item--tall { grid-row: span 1; }
+
+      /* Momentos: 2 colunas */
+      .momentos__grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .momento { min-height: 180px; }
+      .momento__title { font-size: 0.9rem; }
+      .momento__desc { font-size: 0.75rem; }
+      .momento__content { padding: 14px; }
+
+      /* Avaliações: 1 coluna */
+      .reviews__grid { grid-template-columns: 1fr; }
+
+      /* Reserva CTAs */
+      .reserva__ctas { flex-direction: column; align-items: center; }
+      .reserva__ctas .btn { width: 100%; justify-content: center; }
+      .reserva__info { gap: 20px; }
+
+      /* Horários: 2 colunas */
+      .horarios__grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .horario__card { padding: 20px 16px; }
+
+      /* CTA final */
+      .cta-final__ctas { flex-direction: column; align-items: center; }
+      .cta-final__ctas .btn { width: 100%; justify-content: center; }
+
+      /* Prova social */
+      .prova__num { font-size: 3.5rem; }
+
+      /* Botões hero menores */
+      .btn { font-size: 0.95rem; padding: 12px 20px; }
+    }
   </style>
 </head>
 <body>
