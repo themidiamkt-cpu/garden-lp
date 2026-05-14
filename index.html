@@ -134,18 +134,7 @@
     }
 
     /* Número de seção decorativo */
-    .section-num {
-      font-family: var(--ff-display);
-      font-size: 8rem;
-      font-weight: 700;
-      color: rgba(201,168,76,0.08);
-      position: absolute;
-      top: 0; left: clamp(20px, 5vw, 60px);
-      line-height: 1;
-      pointer-events: none;
-      user-select: none;
-    }
-    .section--verde .section-num { color: rgba(255,255,255,0.06); }
+    .section-num { display: none; }
 
     /* ─── BOTÕES ─────────────────────────────────────────── */
     .btn {
@@ -296,9 +285,16 @@
     ════════════════════════════════════════════════════════ */
     .motivos__grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 32px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
       margin-top: 48px;
+    }
+    @media (max-width: 480px) {
+      .motivos__grid { gap: 10px; }
+      .motivo { padding: 22px 16px; }
+      .motivo__title { font-size: 1rem; }
+      .motivo__text { font-size: 0.85rem; }
+      .motivo__icon { font-size: 1.6rem; margin-bottom: 10px; }
     }
     .motivo {
       background: var(--branco);
@@ -378,13 +374,13 @@
     .diferenciais__grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
+      gap: 16px;
     }
-    @media (max-width: 900px) {
-      .diferenciais__grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 560px) {
-      .diferenciais__grid { grid-template-columns: 1fr; }
+    @media (max-width: 480px) {
+      .diferencial { padding: 20px 14px; }
+      .diferencial__title { font-size: 0.9rem; }
+      .diferencial__text { font-size: 0.8rem; }
+      .diferencial__icon { width: 44px; height: 44px; font-size: 1.2rem; }
     }
     .diferencial {
       background: rgba(255,255,255,0.05);
@@ -913,12 +909,6 @@
             Perto da Av. José de Souza Campos e do Galleria Shopping
           </div>
         </div>
-        <div class="localizacao__bairros">
-          <p>
-            <strong>Atendemos quem vem de:</strong><br>
-            Cambuí · Taquaral · Centro · Jardim Guanabara · Bonfim · Nova Campinas · Castelo
-          </p>
-        </div>
         <a href="https://maps.google.com/?q=Rua+Ana+Jarvis,+58,+Cambuí,+Campinas"
            class="btn btn--verde"
            style="margin-top:24px;"
@@ -982,7 +972,7 @@
   <div class="container">
     <div class="galeria__header">
       <span class="section-label reveal">Galeria</span>
-      <h2 class="reveal">Uma foto vale uma reserva</h2>
+      <h2 class="reveal">É assim por aqui</h2>
       <p class="reveal" style="color:var(--texto-medio);margin-top:10px;">Do salão iluminado à brasa dourada — cada detalhe foi pensado para a sua experiência.</p>
     </div>
     <div class="galeria__grid reveal">
@@ -1352,7 +1342,7 @@
     </div>
     <div class="footer__bottom">
       <span class="footer__copy">© 2026 Garden Bar & Restaurante. Todos os direitos reservados.</span>
-      <span class="footer__themidia">Desenvolvido por <a href="https://themidia.com.br" target="_blank" rel="noopener">The Mídia Marketing</a></span>
+      <span class="footer__themidia">Desenvolvido por <a href="https://instagram.com/agenciathemidia" target="_blank" rel="noopener">The Mídia Marketing</a></span>
     </div>
   </div>
 </footer>
