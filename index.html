@@ -14,6 +14,15 @@
   <link rel="icon" type="image/png" href="./img/favicon.png" />
   <link rel="apple-touch-icon" href="./img/favicon.png" />
 
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-721017465"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-721017465');
+  </script>
+
   <!-- Meta Pixel Code -->
   <script>
   !function(f,b,e,v,n,t,s)
@@ -530,10 +539,107 @@
     #reserva {
       text-align: center;
     }
-    .reserva__content { max-width: 640px; margin-inline: auto; }
+    .reserva__content { max-width: 760px; margin-inline: auto; }
     .reserva__title { color: var(--branco); margin-bottom: 16px; }
-    .reserva__sub { color: rgba(255,255,255,0.8); margin-bottom: 40px; font-size: 1.1rem; }
+    .reserva__sub { color: rgba(255,255,255,0.8); margin-bottom: 32px; font-size: 1.1rem; }
     .reserva__ctas { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .reserva-form {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: var(--radius);
+      padding: clamp(22px, 4vw, 34px);
+      text-align: left;
+      box-shadow: 0 18px 44px rgba(0,0,0,0.18);
+    }
+    .reserva-form__grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+    .reserva-form__field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .reserva-form__field--full { grid-column: 1 / -1; }
+    .reserva-form label {
+      color: var(--branco);
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+    .reserva-form input,
+    .reserva-form select {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid rgba(255,255,255,0.26);
+      border-radius: 6px;
+      background: var(--branco);
+      color: var(--texto-escuro);
+      font: 500 1rem var(--ff-body);
+      padding: 12px 14px;
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+    .reserva-form input:focus,
+    .reserva-form select:focus {
+      border-color: var(--dourado-claro);
+      box-shadow: 0 0 0 3px rgba(226,192,110,0.25);
+    }
+    .reserva-form input::placeholder { color: #777; }
+    .reserva-form__hint {
+      color: rgba(255,255,255,0.72);
+      font-size: 0.84rem;
+      line-height: 1.45;
+    }
+    .reserva-form__notice {
+      display: none;
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 6px;
+      background: rgba(201,168,76,0.16);
+      border: 1px solid rgba(226,192,110,0.36);
+      color: var(--branco);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+    .reserva-form__notice.visible { display: block; }
+    .reserva-form__check {
+      display: none;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 14px;
+      color: rgba(255,255,255,0.86);
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+    .reserva-form__check.visible { display: flex; }
+    .reserva-form__check input {
+      width: 18px;
+      min-width: 18px;
+      height: 18px;
+      min-height: 18px;
+      margin-top: 2px;
+      accent-color: var(--dourado);
+    }
+    .reserva-form__actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+    .reserva-form__actions .btn[disabled] {
+      opacity: 0.68;
+      cursor: wait;
+      transform: none;
+    }
+    .reserva-form__status {
+      min-height: 22px;
+      color: var(--dourado-claro);
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+    .reserva-form__status.error { color: #ffd6d6; }
     .reserva__info {
       margin-top: 40px;
       display: flex;
@@ -811,6 +917,10 @@
       .reserva__ctas { flex-direction: column; align-items: center; }
       .reserva__ctas .btn { width: 100%; justify-content: center; }
       .reserva__info { gap: 20px; }
+      .reserva-form__grid { grid-template-columns: 1fr; }
+      .reserva-form__actions { flex-direction: column; align-items: stretch; }
+      .reserva-form__actions .btn { width: 100%; justify-content: center; }
+      .reserva-form__status { text-align: center; }
 
       /* Horários: 2 colunas */
       .horarios__grid { grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -863,10 +973,9 @@
         ambiente aconchegante para toda a família — no mesmo endereço.
       </p>
       <div class="hero__ctas">
-        <a href="https://wa.me/5519986007788?text=Olá!%20Quero%20fazer%20uma%20reserva%20no%20Garden%20Bar."
+        <a href="#reserva"
            class="btn btn--gold"
-           target="_blank" rel="noopener"
-           aria-label="Reservar mesa pelo WhatsApp">
+           aria-label="Reservar mesa no Garden Bar">
           🍽️ Reservar Mesa
         </a>
         <a href="https://xmenu.com.br"
@@ -1162,20 +1271,45 @@
     <div class="reserva__content">
       <span class="section-label reveal">Reserve agora</span>
       <h2 class="reserva__title reveal">Sua mesa está<br>esperando por você</h2>
-      <p class="reserva__sub reveal">Escolha como prefere: WhatsApp direto ou telefone. Confirmação rápida, sem burocracia.</p>
-      <div class="reserva__ctas reveal">
-        <a href="https://wa.me/5519986007788?text=Olá!%20Quero%20fazer%20uma%20reserva%20no%20Garden%20Bar.%20Pode%20me%20ajudar%3F"
-           class="btn btn--gold"
-           target="_blank" rel="noopener"
-           aria-label="Fazer reserva via WhatsApp">
-          💬 Reservar pelo WhatsApp
-        </a>
-        <a href="tel:+5519986007788"
-           class="btn btn--outline"
-           aria-label="Ligar para o Garden Bar">
-          📞 (19) 98600-7788
-        </a>
-      </div>
+      <p class="reserva__sub reveal">Preencha os dados e nossa equipe confirma sua mesa pelo WhatsApp.</p>
+      <form class="reserva-form reveal" id="reserva-form" novalidate>
+        <div class="reserva-form__grid">
+          <div class="reserva-form__field reserva-form__field--full">
+            <label for="reserva-nome">Nome</label>
+            <input id="reserva-nome" name="nome" type="text" autocomplete="name" placeholder="Seu nome completo" required />
+          </div>
+          <div class="reserva-form__field">
+            <label for="reserva-whatsapp">WhatsApp</label>
+            <input id="reserva-whatsapp" name="whatsapp" type="tel" autocomplete="tel" inputmode="tel" placeholder="(19) 98600-7788" required />
+          </div>
+          <div class="reserva-form__field">
+            <label for="reserva-pessoas">Número de pessoas</label>
+            <input id="reserva-pessoas" name="pessoas" type="number" min="1" max="200" step="1" value="2" required />
+          </div>
+          <div class="reserva-form__field">
+            <label for="reserva-data">Data</label>
+            <input id="reserva-data" name="data" type="date" required />
+          </div>
+          <div class="reserva-form__field">
+            <label for="reserva-horario">Horário</label>
+            <select id="reserva-horario" name="horario" required>
+              <option value="">Escolha uma data primeiro</option>
+            </select>
+          </div>
+        </div>
+        <p class="reserva-form__hint">Reservas disponíveis apenas dentro do horário de funcionamento, com intervalos de 30 minutos.</p>
+        <div class="reserva-form__notice" id="pix-notice">
+          Reservas acima de 20 pessoas precisam de Pix de garantia. A equipe do Garden enviará as instruções pelo WhatsApp antes de confirmar a mesa.
+        </div>
+        <label class="reserva-form__check" id="pix-check-wrap" for="pix-ack">
+          <input id="pix-ack" name="pixGuaranteeAcknowledged" type="checkbox" />
+          Estou ciente de que reservas acima de 20 pessoas exigem Pix de garantia para confirmação.
+        </label>
+        <div class="reserva-form__actions">
+          <button class="btn btn--gold" type="submit" id="reserva-submit">Enviar reserva</button>
+          <p class="reserva-form__status" id="reserva-status" role="status" aria-live="polite"></p>
+        </div>
+      </form>
       <div class="reserva__info reveal">
         <div class="reserva__info-item">
           <span class="reserva__info-icon" aria-hidden="true">⚡</span>
@@ -1329,12 +1463,11 @@
       Reserve agora e garanta o melhor churrasco do Cambuí para você e quem você ama.
     </p>
     <div class="cta-final__ctas reveal">
-      <a href="https://wa.me/5519986007788?text=Olá!%20Quero%20fazer%20uma%20reserva%20no%20Garden%20Bar.%20Pode%20me%20ajudar%3F"
+      <a href="#reserva"
          class="btn btn--gold"
-         target="_blank" rel="noopener"
          style="font-size:1.05rem;padding:16px 32px;"
-         aria-label="Reservar mesa no Garden Bar pelo WhatsApp">
-        💬 Reservar pelo WhatsApp
+         aria-label="Reservar mesa no Garden Bar">
+        Reservar mesa
       </a>
       <a href="https://xmenu.com.br"
          class="btn btn--outline"
@@ -1468,6 +1601,195 @@
     });
   }
   animateStars();
+
+  /* ─── Formulário de reserva ─────────────────────── */
+  const reservaForm = document.getElementById('reserva-form');
+  const reservaDate = document.getElementById('reserva-data');
+  const reservaTime = document.getElementById('reserva-horario');
+  const reservaPeople = document.getElementById('reserva-pessoas');
+  const reservaStatus = document.getElementById('reserva-status');
+  const reservaSubmit = document.getElementById('reserva-submit');
+  const pixNotice = document.getElementById('pix-notice');
+  const pixCheckWrap = document.getElementById('pix-check-wrap');
+  const pixAck = document.getElementById('pix-ack');
+
+  const openingHours = {
+    0: [{ start: '11:00', end: '18:00' }],
+    1: [{ start: '11:00', end: '15:00' }],
+    2: [{ start: '11:00', end: '15:00' }],
+    3: [{ start: '11:00', end: '15:00' }, { start: '18:00', end: '24:00' }],
+    4: [{ start: '11:00', end: '15:00' }, { start: '18:00', end: '24:00' }],
+    5: [{ start: '11:00', end: '15:00' }, { start: '18:00', end: '24:00' }],
+    6: [{ start: '11:00', end: '24:00' }]
+  };
+
+  function padTime(value) {
+    return String(value).padStart(2, '0');
+  }
+
+  function minutesFromTime(time) {
+    const [hours, minutes] = time.split(':').map(Number);
+    return (hours * 60) + minutes;
+  }
+
+  function timeFromMinutes(total) {
+    return `${padTime(Math.floor(total / 60))}:${padTime(total % 60)}`;
+  }
+
+  function localDateString(date = new Date()) {
+    const parts = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'America/Sao_Paulo',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }).formatToParts(date).reduce((acc, part) => {
+      acc[part.type] = part.value;
+      return acc;
+    }, {});
+    return `${parts.year}-${parts.month}-${parts.day}`;
+  }
+
+  function localMinutes(date = new Date()) {
+    const parts = new Intl.DateTimeFormat('pt-BR', {
+      timeZone: 'America/Sao_Paulo',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    }).formatToParts(date).reduce((acc, part) => {
+      acc[part.type] = part.value;
+      return acc;
+    }, {});
+    return (Number(parts.hour) * 60) + Number(parts.minute);
+  }
+
+  function dayOfWeek(dateString) {
+    const [year, month, day] = dateString.split('-').map(Number);
+    return new Date(Date.UTC(year, month - 1, day)).getUTCDay();
+  }
+
+  function getValidSlots(dateString) {
+    if (!dateString || dateString < localDateString()) return [];
+    const today = localDateString();
+    const nowMinutes = localMinutes();
+    const intervals = openingHours[dayOfWeek(dateString)] || [];
+    const slots = [];
+
+    intervals.forEach(interval => {
+      const start = minutesFromTime(interval.start);
+      const end = minutesFromTime(interval.end);
+      for (let minute = start; minute < end; minute += 30) {
+        if (dateString === today && minute <= nowMinutes) continue;
+        slots.push(timeFromMinutes(minute));
+      }
+    });
+
+    return slots;
+  }
+
+  function updateTimeSlots() {
+    if (!reservaDate || !reservaTime) return;
+    const slots = getValidSlots(reservaDate.value);
+    reservaTime.innerHTML = '';
+
+    if (!reservaDate.value) {
+      reservaTime.add(new Option('Escolha uma data primeiro', ''));
+      return;
+    }
+
+    if (!slots.length) {
+      reservaTime.add(new Option('Sem horários disponíveis para esta data', ''));
+      return;
+    }
+
+    reservaTime.add(new Option('Escolha um horário', ''));
+    slots.forEach(slot => reservaTime.add(new Option(slot, slot)));
+  }
+
+  function updatePixNotice() {
+    if (!reservaPeople || !pixNotice || !pixCheckWrap || !pixAck) return;
+    const needsPix = Number(reservaPeople.value) > 20;
+    pixNotice.classList.toggle('visible', needsPix);
+    pixCheckWrap.classList.toggle('visible', needsPix);
+    pixAck.required = needsPix;
+    if (!needsPix) pixAck.checked = false;
+  }
+
+  function setReservaStatus(message, isError = false) {
+    if (!reservaStatus) return;
+    reservaStatus.textContent = message;
+    reservaStatus.classList.toggle('error', isError);
+  }
+
+  function getTrackingData() {
+    const params = new URLSearchParams(window.location.search);
+    return {
+      pageUrl: window.location.href,
+      referrer: document.referrer || '',
+      utm_source: params.get('utm_source') || '',
+      utm_medium: params.get('utm_medium') || '',
+      utm_campaign: params.get('utm_campaign') || '',
+      utm_term: params.get('utm_term') || '',
+      utm_content: params.get('utm_content') || ''
+    };
+  }
+
+  if (reservaForm) {
+    if (reservaDate) {
+      reservaDate.min = localDateString();
+      reservaDate.addEventListener('change', updateTimeSlots);
+    }
+    if (reservaPeople) reservaPeople.addEventListener('input', updatePixNotice);
+    updateTimeSlots();
+    updatePixNotice();
+
+    reservaForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      setReservaStatus('');
+
+      if (!reservaForm.checkValidity()) {
+        reservaForm.reportValidity();
+        return;
+      }
+
+      const people = Number(reservaPeople.value);
+      if (people > 20 && !pixAck.checked) {
+        setReservaStatus('Confirme a ciência sobre o Pix de garantia para grupos acima de 20 pessoas.', true);
+        return;
+      }
+
+      const payload = {
+        nome: document.getElementById('reserva-nome').value.trim(),
+        whatsapp: document.getElementById('reserva-whatsapp').value.trim(),
+        data: reservaDate.value,
+        horario: reservaTime.value,
+        pessoas: people,
+        pixGuaranteeRequired: people > 20,
+        pixGuaranteeAcknowledged: people > 20 ? pixAck.checked : false,
+        tracking: getTrackingData()
+      };
+
+      reservaSubmit.disabled = true;
+      setReservaStatus('Enviando sua reserva...');
+
+      try {
+        const response = await fetch('/api/reservas', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+          throw new Error(result.error || 'Não foi possível enviar sua reserva agora.');
+        }
+
+        window.location.href = '/reserva-confirmada';
+      } catch (error) {
+        setReservaStatus(error.message || 'Não foi possível enviar sua reserva agora. Tente novamente.', true);
+        reservaSubmit.disabled = false;
+      }
+    });
+  }
 
   /* ─── GTM Placeholder ────────────────────────────── */
   // Substitua 'GTM-XXXXXXX' pelo ID real do GTM

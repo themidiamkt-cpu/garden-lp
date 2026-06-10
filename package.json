@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "build": "node tests/static-pages.test.js",
+    "test": "node tests/api-reservas.test.js && node tests/static-pages.test.js"
+  }
+}

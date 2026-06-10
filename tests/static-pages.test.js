@@ -1,0 +1,18 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+
+const root = path.join(__dirname, '..');
+const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+const confirmation = fs.readFileSync(path.join(root, 'reserva-confirmada', 'index.html'), 'utf8');
+
+assert.match(index, /id="reserva-form"/);
+assert.match(index, /fetch\('\/api\/reservas'/);
+assert.match(index, /AW-721017465/);
+assert.match(index, /1221948576112799/);
+
+assert.match(confirmation, /noindex, nofollow/);
+assert.match(confirmation, /AW-721017465\/JK0rCNadwLwcEPm059cC/);
+assert.match(confirmation, /Reserva enviada com sucesso/);
+
+console.log('Static page checks passed.');
