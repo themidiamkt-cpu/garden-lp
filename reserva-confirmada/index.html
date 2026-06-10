@@ -39,6 +39,12 @@
   'https://connect.facebook.net/en_US/fbevents.js');
   fbq('init', '1221948576112799');
   fbq('track', 'PageView');
+  fbq('track', 'Lead', {
+    content_name: 'Formulario Garden',
+    content_category: 'Reserva',
+    value: 1.0,
+    currency: 'BRL'
+  });
   </script>
   <noscript><img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id=1221948576112799&ev=PageView&noscript=1"
