@@ -1,4 +1,4 @@
-const { isValidSlot } = require('./_reservaRules');
+const { isPastReservationCutoff, isValidSlot } = require('./_reservaRules');
 
 const WEBHOOK_URL = 'https://automacao2.themidiamarketing.com.br/webhook/garden-reservas';
 
@@ -47,7 +47,7 @@ function cleanTracking(tracking = {}) {
   };
 }
 
-function validateReservation(body) {
+function validateReservation(body, now = new Date()) {
   const nome = cleanText(body.nome);
   const whatsapp = cleanText(body.whatsapp);
   const data = cleanText(body.data);
@@ -63,7 +63,10 @@ function validateReservation(body) {
   if (!Number.isInteger(pessoas) || pessoas < 1 || pessoas > 200) {
     return { error: 'Informe um número válido de pessoas.' };
   }
-  if (!isValidSlot(data, horario)) {
+  if (isPastReservationCutoff(now)) {
+    return { error: 'Reservas pelo site ficam disponíveis somente até 19:30.' };
+  }
+  if (!isValidSlot(data, horario, now)) {
     return { error: 'Escolha um horário dentro do funcionamento do Garden.' };
   }
   if (pixGuaranteeRequired && !pixGuaranteeAcknowledged) {
