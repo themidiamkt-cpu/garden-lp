@@ -10,6 +10,7 @@ assert.match(index, /id="reserva-form"/);
 assert.match(index, /fetch\('\/api\/reservas'/);
 assert.match(index, /AW-721017465/);
 assert.match(index, /1221948576112799/);
+assert.match(index, /facebook-domain-verification" content="8o9oiql3caamfbcd6g1gr446gaq02t/);
 
 assert.match(confirmation, /noindex, nofollow/);
 assert.match(confirmation, /AW-721017465\/JK0rCNadwLwcEPm059cC/);
