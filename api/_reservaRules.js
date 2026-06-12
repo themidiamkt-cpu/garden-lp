@@ -1,5 +1,6 @@
 const TIMEZONE = 'America/Sao_Paulo';
 const RESERVATION_CUTOFF_TIME = '19:00';
+const CLOSED_DATES = new Set(['2026-06-12']);
 
 const OPENING_HOURS = {
   0: [{ start: '11:00', end: '18:00' }],
@@ -59,6 +60,7 @@ function dayOfWeek(dateString) {
 
 function getValidSlots(dateString, now = new Date()) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(String(dateString))) return [];
+  if (CLOSED_DATES.has(dateString)) return [];
 
   const today = localDateString(now);
   if (dateString < today) return [];
@@ -87,6 +89,7 @@ function isValidSlot(dateString, time, now = new Date()) {
 }
 
 module.exports = {
+  CLOSED_DATES,
   OPENING_HOURS,
   RESERVATION_CUTOFF_TIME,
   TIMEZONE,
