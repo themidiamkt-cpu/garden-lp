@@ -1,5 +1,6 @@
 const assert = require('node:assert/strict');
 const handler = require('../api/reservas');
+const { getValidSlots } = require('../api/_reservaRules');
 
 (async () => {
   const beforeCutoff = new Date('2026-06-11T21:00:00.000Z');
@@ -16,6 +17,22 @@ const handler = require('../api/reservas');
 
   assert.match(outsideHours.error, /horário dentro do funcionamento/i);
 
+  const saturdaySlots = getValidSlots('2026-06-13', beforeCutoff);
+  assert.ok(saturdaySlots.includes('19:00'));
+  assert.ok(!saturdaySlots.includes('19:30'));
+  assert.ok(!saturdaySlots.includes('20:00'));
+
+  const afterLimitTime = handler.validateReservation({
+    nome: 'Teste Garden',
+    whatsapp: '(19) 99999-9999',
+    data: '2026-06-13',
+    horario: '19:30',
+    pessoas: 2,
+    tracking: {}
+  }, beforeCutoff);
+
+  assert.match(afterLimitTime.error, /horário dentro do funcionamento/i);
+
   const missingPixAck = handler.validateReservation({
     nome: 'Grupo Garden',
     whatsapp: '(19) 99999-9999',
@@ -28,7 +45,7 @@ const handler = require('../api/reservas');
 
   assert.match(missingPixAck.error, /Pix de garantia/i);
 
-  const cutoffBlocked = handler.validateReservation({
+  const afterCutoffAllowed = handler.validateReservation({
     nome: 'Teste Garden',
     whatsapp: '(19) 99999-9999',
     data: '2026-06-13',
@@ -37,7 +54,8 @@ const handler = require('../api/reservas');
     tracking: {}
   }, afterCutoff);
 
-  assert.match(cutoffBlocked.error, /somente até 19:00/i);
+  assert.equal(afterCutoffAllowed.error, undefined);
+  assert.equal(afterCutoffAllowed.data.horario, '11:00');
 
   console.log('API reservation validation tests passed.');
 })().catch(error => {

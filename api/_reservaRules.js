@@ -52,10 +52,6 @@ function localMinutes(date = new Date()) {
   return (Number(parts.hour) * 60) + Number(parts.minute);
 }
 
-function isPastReservationCutoff(now = new Date()) {
-  return localMinutes(now) > minutesFromTime(RESERVATION_CUTOFF_TIME);
-}
-
 function dayOfWeek(dateString) {
   const [year, month, day] = dateString.split('-').map(Number);
   return new Date(Date.UTC(year, month - 1, day)).getUTCDay();
@@ -63,7 +59,6 @@ function dayOfWeek(dateString) {
 
 function getValidSlots(dateString, now = new Date()) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(String(dateString))) return [];
-  if (isPastReservationCutoff(now)) return [];
 
   const today = localDateString(now);
   if (dateString < today) return [];
@@ -75,8 +70,10 @@ function getValidSlots(dateString, now = new Date()) {
   intervals.forEach(interval => {
     const start = minutesFromTime(interval.start);
     const end = minutesFromTime(interval.end);
+    const latestReservation = minutesFromTime(RESERVATION_CUTOFF_TIME);
 
     for (let minute = start; minute < end; minute += 30) {
+      if (minute > latestReservation) break;
       if (dateString === today && minute <= currentMinutes) continue;
       slots.push(timeFromMinutes(minute));
     }
@@ -94,6 +91,5 @@ module.exports = {
   RESERVATION_CUTOFF_TIME,
   TIMEZONE,
   getValidSlots,
-  isPastReservationCutoff,
   isValidSlot
 };

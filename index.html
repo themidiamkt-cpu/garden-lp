@@ -1665,10 +1665,6 @@
     return (Number(parts.hour) * 60) + Number(parts.minute);
   }
 
-  function isPastReservationCutoff(date = new Date()) {
-    return localMinutes(date) > minutesFromTime(reservationCutoffTime);
-  }
-
   function dayOfWeek(dateString) {
     const [year, month, day] = dateString.split('-').map(Number);
     return new Date(Date.UTC(year, month - 1, day)).getUTCDay();
@@ -1676,7 +1672,6 @@
 
   function getValidSlots(dateString) {
     if (!dateString || dateString < localDateString()) return [];
-    if (isPastReservationCutoff()) return [];
     const today = localDateString();
     const nowMinutes = localMinutes();
     const intervals = openingHours[dayOfWeek(dateString)] || [];
@@ -1685,7 +1680,9 @@
     intervals.forEach(interval => {
       const start = minutesFromTime(interval.start);
       const end = minutesFromTime(interval.end);
+      const latestReservation = minutesFromTime(reservationCutoffTime);
       for (let minute = start; minute < end; minute += 30) {
+        if (minute > latestReservation) break;
         if (dateString === today && minute <= nowMinutes) continue;
         slots.push(timeFromMinutes(minute));
       }
@@ -1705,10 +1702,7 @@
     }
 
     if (!slots.length) {
-      const message = isPastReservationCutoff()
-        ? 'Reservas disponíveis somente até 19:00'
-        : 'Sem horários disponíveis para esta data';
-      reservaTime.add(new Option(message, ''));
+      reservaTime.add(new Option('Sem horários disponíveis para esta data', ''));
       return;
     }
 
@@ -1763,12 +1757,6 @@
       }
 
       const people = Number(reservaPeople.value);
-      if (isPastReservationCutoff()) {
-        setReservaStatus('Reservas pelo site ficam disponíveis somente até 19:00.', true);
-        updateTimeSlots();
-        return;
-      }
-
       if (people > 20 && !pixAck.checked) {
         setReservaStatus('Confirme a ciência sobre o Pix de garantia para grupos acima de 20 pessoas.', true);
         return;
