@@ -13,8 +13,9 @@ assert.match(index, /1221948576112799/);
 
 assert.match(confirmation, /noindex, nofollow/);
 assert.match(confirmation, /AW-721017465\/JK0rCNadwLwcEPm059cC/);
-assert.match(confirmation, /fbq\('track', 'Lead'/);
+assert.match(confirmation, /fbq\('trackSingle', '1221948576112799', 'Lead'/);
 assert.match(confirmation, /content_name: 'Formulario Garden'/);
+assert.match(confirmation, /ev=Lead/);
 assert.match(confirmation, /Reserva enviada com sucesso/);
 
 console.log('Static page checks passed.');

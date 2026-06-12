@@ -38,8 +38,8 @@
   s.parentNode.insertBefore(t,s)}(window, document,'script',
   'https://connect.facebook.net/en_US/fbevents.js');
   fbq('init', '1221948576112799');
-  fbq('track', 'PageView');
-  fbq('track', 'Lead', {
+  fbq('trackSingle', '1221948576112799', 'PageView');
+  fbq('trackSingle', '1221948576112799', 'Lead', {
     content_name: 'Formulario Garden',
     content_category: 'Reserva',
     value: 1.0,
@@ -48,6 +48,9 @@
   </script>
   <noscript><img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id=1221948576112799&ev=PageView&noscript=1"
+  /></noscript>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1221948576112799&ev=Lead&cd[content_name]=Formulario%20Garden&cd[content_category]=Reserva&cd[value]=1.0&cd[currency]=BRL&noscript=1"
   /></noscript>
   <!-- End Meta Pixel Code -->
 
