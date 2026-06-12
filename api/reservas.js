@@ -64,7 +64,7 @@ function validateReservation(body, now = new Date()) {
     return { error: 'Informe um número válido de pessoas.' };
   }
   if (isPastReservationCutoff(now)) {
-    return { error: 'Reservas pelo site ficam disponíveis somente até 19:30.' };
+    return { error: 'Reservas pelo site ficam disponíveis somente até 19:00.' };
   }
   if (!isValidSlot(data, horario, now)) {
     return { error: 'Escolha um horário dentro do funcionamento do Garden.' };

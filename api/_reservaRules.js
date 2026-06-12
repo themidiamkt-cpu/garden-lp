@@ -1,5 +1,5 @@
 const TIMEZONE = 'America/Sao_Paulo';
-const RESERVATION_CUTOFF_TIME = '19:30';
+const RESERVATION_CUTOFF_TIME = '19:00';
 
 const OPENING_HOURS = {
   0: [{ start: '11:00', end: '18:00' }],

@@ -3,7 +3,7 @@ const handler = require('../api/reservas');
 
 (async () => {
   const beforeCutoff = new Date('2026-06-11T21:00:00.000Z');
-  const afterCutoff = new Date('2026-06-11T22:31:00.000Z');
+  const afterCutoff = new Date('2026-06-11T22:01:00.000Z');
 
   const outsideHours = handler.validateReservation({
     nome: 'Teste Garden',
@@ -37,7 +37,7 @@ const handler = require('../api/reservas');
     tracking: {}
   }, afterCutoff);
 
-  assert.match(cutoffBlocked.error, /somente até 19:30/i);
+  assert.match(cutoffBlocked.error, /somente até 19:00/i);
 
   console.log('API reservation validation tests passed.');
 })().catch(error => {

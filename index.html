@@ -1614,7 +1614,7 @@
   const pixNotice = document.getElementById('pix-notice');
   const pixCheckWrap = document.getElementById('pix-check-wrap');
   const pixAck = document.getElementById('pix-ack');
-  const reservationCutoffTime = '19:30';
+  const reservationCutoffTime = '19:00';
 
   const openingHours = {
     0: [{ start: '11:00', end: '18:00' }],
@@ -1706,7 +1706,7 @@
 
     if (!slots.length) {
       const message = isPastReservationCutoff()
-        ? 'Reservas disponíveis somente até 19:30'
+        ? 'Reservas disponíveis somente até 19:00'
         : 'Sem horários disponíveis para esta data';
       reservaTime.add(new Option(message, ''));
       return;
@@ -1764,7 +1764,7 @@
 
       const people = Number(reservaPeople.value);
       if (isPastReservationCutoff()) {
-        setReservaStatus('Reservas pelo site ficam disponíveis somente até 19:30.', true);
+        setReservaStatus('Reservas pelo site ficam disponíveis somente até 19:00.', true);
         updateTimeSlots();
         return;
       }
