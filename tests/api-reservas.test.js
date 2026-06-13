@@ -17,7 +17,7 @@ const { getValidSlots } = require('../api/_reservaRules');
 
   assert.match(outsideHours.error, /horário dentro do funcionamento/i);
 
-  const saturdaySlots = getValidSlots('2026-06-13', beforeCutoff);
+  const saturdaySlots = getValidSlots('2026-06-20', beforeCutoff);
   assert.ok(saturdaySlots.includes('19:00'));
   assert.ok(!saturdaySlots.includes('19:30'));
   assert.ok(!saturdaySlots.includes('20:00'));
@@ -25,7 +25,7 @@ const { getValidSlots } = require('../api/_reservaRules');
   const afterLimitTime = handler.validateReservation({
     nome: 'Teste Garden',
     whatsapp: '(19) 99999-9999',
-    data: '2026-06-13',
+    data: '2026-06-20',
     horario: '19:30',
     pessoas: 2,
     tracking: {}
@@ -47,10 +47,24 @@ const { getValidSlots } = require('../api/_reservaRules');
 
   assert.match(closedDateReservation.error, /horário dentro do funcionamento/i);
 
+  const todayClosedSlots = getValidSlots('2026-06-13', beforeCutoff);
+  assert.deepEqual(todayClosedSlots, []);
+
+  const todayClosedReservation = handler.validateReservation({
+    nome: 'Teste Garden',
+    whatsapp: '(19) 99999-9999',
+    data: '2026-06-13',
+    horario: '18:00',
+    pessoas: 2,
+    tracking: {}
+  }, beforeCutoff);
+
+  assert.match(todayClosedReservation.error, /horário dentro do funcionamento/i);
+
   const missingPixAck = handler.validateReservation({
     nome: 'Grupo Garden',
     whatsapp: '(19) 99999-9999',
-    data: '2026-06-13',
+    data: '2026-06-20',
     horario: '11:00',
     pessoas: 21,
     pixGuaranteeAcknowledged: false,
@@ -62,7 +76,7 @@ const { getValidSlots } = require('../api/_reservaRules');
   const afterCutoffAllowed = handler.validateReservation({
     nome: 'Teste Garden',
     whatsapp: '(19) 99999-9999',
-    data: '2026-06-13',
+    data: '2026-06-20',
     horario: '11:00',
     pessoas: 2,
     tracking: {}

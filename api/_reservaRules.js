@@ -1,6 +1,6 @@
 const TIMEZONE = 'America/Sao_Paulo';
 const RESERVATION_CUTOFF_TIME = '19:00';
-const CLOSED_DATES = new Set(['2026-06-12']);
+const CLOSED_DATES = new Set(['2026-06-12', '2026-06-13']);
 
 const OPENING_HOURS = {
   0: [{ start: '11:00', end: '18:00' }],
