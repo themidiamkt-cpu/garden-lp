@@ -75,6 +75,20 @@ const { getValidSlots } = require('../api/_reservaRules');
 
   assert.match(requestedClosedReservation.error, /horário dentro do funcionamento/i);
 
+  const june24ClosedSlots = getValidSlots('2026-06-24', beforeCutoff);
+  assert.deepEqual(june24ClosedSlots, []);
+
+  const june24ClosedReservation = handler.validateReservation({
+    nome: 'Teste Garden',
+    whatsapp: '(19) 99999-9999',
+    data: '2026-06-24',
+    horario: '18:00',
+    pessoas: 2,
+    tracking: {}
+  }, beforeCutoff);
+
+  assert.match(june24ClosedReservation.error, /horário dentro do funcionamento/i);
+
   const missingPixAck = handler.validateReservation({
     nome: 'Grupo Garden',
     whatsapp: '(19) 99999-9999',
