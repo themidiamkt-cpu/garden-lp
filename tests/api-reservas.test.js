@@ -18,15 +18,15 @@ const { getValidSlots } = require('../api/_reservaRules');
   assert.match(outsideHours.error, /horário dentro do funcionamento/i);
 
   const saturdaySlots = getValidSlots('2026-06-20', beforeCutoff);
-  assert.ok(saturdaySlots.includes('19:00'));
-  assert.ok(!saturdaySlots.includes('19:30'));
-  assert.ok(!saturdaySlots.includes('20:00'));
+  assert.ok(saturdaySlots.includes('12:00'));
+  assert.ok(!saturdaySlots.includes('12:30'));
+  assert.ok(!saturdaySlots.includes('13:00'));
 
   const afterLimitTime = handler.validateReservation({
     nome: 'Teste Garden',
     whatsapp: '(19) 99999-9999',
     data: '2026-06-20',
-    horario: '19:30',
+    horario: '13:00',
     pessoas: 2,
     tracking: {}
   }, beforeCutoff);
