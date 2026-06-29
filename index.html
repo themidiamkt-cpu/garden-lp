@@ -1307,6 +1307,13 @@
           <input id="pix-ack" name="pixGuaranteeAcknowledged" type="checkbox" />
           Estou ciente de que reservas acima de 20 pessoas exigem Pix de garantia para confirmação.
         </label>
+        <div class="reserva-form__notice" id="game-deposit-notice">
+          No dia 29/06/2026, reservas após 12:00 exigem sinal de R$ 100 por adulto. A equipe do Garden enviará as instruções pelo WhatsApp antes de confirmar a mesa.
+        </div>
+        <label class="reserva-form__check" id="game-deposit-check-wrap" for="game-deposit-ack">
+          <input id="game-deposit-ack" name="gameDayDepositAcknowledged" type="checkbox" />
+          Estou ciente de que reservas após 12:00 no dia 29/06/2026 exigem sinal de R$ 100 por adulto.
+        </label>
         <div class="reserva-form__actions">
           <button class="btn btn--gold" type="submit" id="reserva-submit">Enviar reserva</button>
           <p class="reserva-form__status" id="reserva-status" role="status" aria-live="polite"></p>
@@ -1614,8 +1621,17 @@
   const pixNotice = document.getElementById('pix-notice');
   const pixCheckWrap = document.getElementById('pix-check-wrap');
   const pixAck = document.getElementById('pix-ack');
+  const gameDepositNotice = document.getElementById('game-deposit-notice');
+  const gameDepositCheckWrap = document.getElementById('game-deposit-check-wrap');
+  const gameDepositAck = document.getElementById('game-deposit-ack');
   const reservationCutoffTime = '12:00';
   const closedReservationDates = new Set(['2026-06-12', '2026-06-13', '2026-06-19', '2026-06-24']);
+  const specialDepositRules = {
+    '2026-06-29': {
+      after: '12:00',
+      amountPerAdult: 100
+    }
+  };
 
   const openingHours = {
     0: [{ start: '11:00', end: '18:00' }],
@@ -1682,7 +1698,9 @@
     intervals.forEach(interval => {
       const start = minutesFromTime(interval.start);
       const end = minutesFromTime(interval.end);
-      const latestReservation = minutesFromTime(reservationCutoffTime);
+      const latestReservation = specialDepositRules[dateString]
+        ? end - 30
+        : minutesFromTime(reservationCutoffTime);
       for (let minute = start; minute < end; minute += 30) {
         if (minute > latestReservation) break;
         if (dateString === today && minute <= nowMinutes) continue;
@@ -1712,6 +1730,12 @@
     slots.forEach(slot => reservaTime.add(new Option(slot, slot)));
   }
 
+  function requiresSpecialDeposit(dateString, time) {
+    const rule = specialDepositRules[dateString];
+    if (!rule || !time) return false;
+    return minutesFromTime(time) > minutesFromTime(rule.after);
+  }
+
   function updatePixNotice() {
     if (!reservaPeople || !pixNotice || !pixCheckWrap || !pixAck) return;
     const needsPix = Number(reservaPeople.value) > 20;
@@ -1719,6 +1743,15 @@
     pixCheckWrap.classList.toggle('visible', needsPix);
     pixAck.required = needsPix;
     if (!needsPix) pixAck.checked = false;
+  }
+
+  function updateGameDepositNotice() {
+    if (!reservaDate || !reservaTime || !gameDepositNotice || !gameDepositCheckWrap || !gameDepositAck) return;
+    const needsDeposit = requiresSpecialDeposit(reservaDate.value, reservaTime.value);
+    gameDepositNotice.classList.toggle('visible', needsDeposit);
+    gameDepositCheckWrap.classList.toggle('visible', needsDeposit);
+    gameDepositAck.required = needsDeposit;
+    if (!needsDeposit) gameDepositAck.checked = false;
   }
 
   function setReservaStatus(message, isError = false) {
@@ -1743,11 +1776,16 @@
   if (reservaForm) {
     if (reservaDate) {
       reservaDate.min = localDateString();
-      reservaDate.addEventListener('change', updateTimeSlots);
+      reservaDate.addEventListener('change', () => {
+        updateTimeSlots();
+        updateGameDepositNotice();
+      });
     }
     if (reservaPeople) reservaPeople.addEventListener('input', updatePixNotice);
+    if (reservaTime) reservaTime.addEventListener('change', updateGameDepositNotice);
     updateTimeSlots();
     updatePixNotice();
+    updateGameDepositNotice();
 
     reservaForm.addEventListener('submit', async event => {
       event.preventDefault();
@@ -1764,6 +1802,12 @@
         return;
       }
 
+      const needsGameDeposit = requiresSpecialDeposit(reservaDate.value, reservaTime.value);
+      if (needsGameDeposit && !gameDepositAck.checked) {
+        setReservaStatus('Confirme a ciência sobre o sinal de R$ 100 por adulto para reservas após 12:00 no dia 29/06/2026.', true);
+        return;
+      }
+
       const payload = {
         nome: document.getElementById('reserva-nome').value.trim(),
         whatsapp: document.getElementById('reserva-whatsapp').value.trim(),
@@ -1772,6 +1816,8 @@
         pessoas: people,
         pixGuaranteeRequired: people > 20,
         pixGuaranteeAcknowledged: people > 20 ? pixAck.checked : false,
+        specialDepositRequired: needsGameDeposit,
+        gameDayDepositAcknowledged: needsGameDeposit ? gameDepositAck.checked : false,
         tracking: getTrackingData()
       };
 

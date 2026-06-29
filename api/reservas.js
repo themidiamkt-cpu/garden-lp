@@ -1,4 +1,4 @@
-const { isValidSlot } = require('./_reservaRules');
+const { requiresSpecialDeposit, isValidSlot } = require('./_reservaRules');
 
 const WEBHOOK_URL = 'https://automacao2.themidiamarketing.com.br/webhook/garden-reservas';
 
@@ -55,6 +55,8 @@ function validateReservation(body, now = new Date()) {
   const pessoas = Number(body.pessoas);
   const pixGuaranteeRequired = pessoas > 20;
   const pixGuaranteeAcknowledged = body.pixGuaranteeAcknowledged === true;
+  const specialDepositRequired = requiresSpecialDeposit(data, horario);
+  const specialDepositAcknowledged = body.gameDayDepositAcknowledged === true;
 
   if (nome.length < 2) return { error: 'Informe seu nome.' };
   if (whatsapp.length < 8) return { error: 'Informe um WhatsApp válido.' };
@@ -69,6 +71,9 @@ function validateReservation(body, now = new Date()) {
   if (pixGuaranteeRequired && !pixGuaranteeAcknowledged) {
     return { error: 'Confirme a ciência sobre o Pix de garantia para reservas acima de 20 pessoas.' };
   }
+  if (specialDepositRequired && !specialDepositAcknowledged) {
+    return { error: 'Confirme a ciência sobre o sinal de R$ 100 por adulto para reservas após 12:00 no dia 29/06/2026.' };
+  }
 
   return {
     data: {
@@ -79,6 +84,8 @@ function validateReservation(body, now = new Date()) {
       pessoas,
       pixGuaranteeRequired,
       pixGuaranteeAcknowledged,
+      specialDepositRequired,
+      specialDepositAcknowledged,
       tracking: cleanTracking(body.tracking)
     }
   };

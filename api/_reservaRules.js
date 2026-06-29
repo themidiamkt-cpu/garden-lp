@@ -1,6 +1,12 @@
 const TIMEZONE = 'America/Sao_Paulo';
 const RESERVATION_CUTOFF_TIME = '12:00';
 const CLOSED_DATES = new Set(['2026-06-12', '2026-06-13', '2026-06-19', '2026-06-24']);
+const SPECIAL_DEPOSIT_RULES = {
+  '2026-06-29': {
+    after: '12:00',
+    amountPerAdult: 100
+  }
+};
 
 const OPENING_HOURS = {
   0: [{ start: '11:00', end: '18:00' }],
@@ -72,7 +78,9 @@ function getValidSlots(dateString, now = new Date()) {
   intervals.forEach(interval => {
     const start = minutesFromTime(interval.start);
     const end = minutesFromTime(interval.end);
-    const latestReservation = minutesFromTime(RESERVATION_CUTOFF_TIME);
+    const latestReservation = SPECIAL_DEPOSIT_RULES[dateString]
+      ? end - 30
+      : minutesFromTime(RESERVATION_CUTOFF_TIME);
 
     for (let minute = start; minute < end; minute += 30) {
       if (minute > latestReservation) break;
@@ -88,11 +96,19 @@ function isValidSlot(dateString, time, now = new Date()) {
   return getValidSlots(dateString, now).includes(time);
 }
 
+function requiresSpecialDeposit(dateString, time) {
+  const rule = SPECIAL_DEPOSIT_RULES[dateString];
+  if (!rule || !/^\d{2}:\d{2}$/.test(String(time))) return false;
+  return minutesFromTime(time) > minutesFromTime(rule.after);
+}
+
 module.exports = {
   CLOSED_DATES,
   OPENING_HOURS,
   RESERVATION_CUTOFF_TIME,
+  SPECIAL_DEPOSIT_RULES,
   TIMEZONE,
   getValidSlots,
-  isValidSlot
+  isValidSlot,
+  requiresSpecialDeposit
 };
