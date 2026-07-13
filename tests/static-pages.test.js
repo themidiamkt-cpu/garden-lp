@@ -10,6 +10,7 @@ const vercelConfig = fs.readFileSync(path.join(root, 'vercel.json'), 'utf8');
 assert.match(index, /id="reserva-form"/);
 assert.match(index, /fetch\('\/api\/reservas'/);
 assert.match(index, /AW-721017465/);
+assert.match(index, /G-ZVX16V0S6Y/);
 assert.match(index, /1221948576112799/);
 assert.match(index, /facebook-domain-verification" content="8o9oiql3caamfbcd6g1gr446gaq02t/);
 assert.match(index, /canonical" href="https:\/\/www\.gardengrill\.com\.br\//);
@@ -18,6 +19,7 @@ assert.doesNotMatch(index, /gardenbar\.com\.br/);
 
 assert.match(confirmation, /noindex, nofollow/);
 assert.match(confirmation, /AW-721017465\/JK0rCNadwLwcEPm059cC/);
+assert.match(confirmation, /G-ZVX16V0S6Y/);
 assert.match(confirmation, /fbq\('track', 'Lead'/);
 assert.match(confirmation, /content_name: 'Formulario Garden'/);
 assert.match(confirmation, /ev=Lead/);
