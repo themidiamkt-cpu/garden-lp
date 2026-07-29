@@ -1300,7 +1300,7 @@
             </select>
           </div>
         </div>
-        <p class="reserva-form__hint">Reservas disponíveis apenas dentro do horário de funcionamento, com intervalos de 30 minutos.</p>
+        <p class="reserva-form__hint">Reservas disponíveis das 11h às 12h. De quarta a sábado, também das 17h às 19h, com intervalos de 30 minutos.</p>
         <div class="reserva-form__notice" id="pix-notice">
           Reservas acima de 20 pessoas precisam de Pix de garantia. A equipe do Garden enviará as instruções pelo WhatsApp antes de confirmar a mesa.
         </div>
@@ -1615,7 +1615,6 @@
   const pixNotice = document.getElementById('pix-notice');
   const pixCheckWrap = document.getElementById('pix-check-wrap');
   const pixAck = document.getElementById('pix-ack');
-  const reservationCutoffTime = '12:00';
   const closedReservationDates = new Set(['2026-06-12', '2026-06-13', '2026-06-19', '2026-06-24', '2026-06-29']);
 
   const openingHours = {
@@ -1626,6 +1625,16 @@
     4: [{ start: '11:00', end: '15:00' }, { start: '18:00', end: '24:00' }],
     5: [{ start: '11:00', end: '15:00' }, { start: '18:00', end: '24:00' }],
     6: [{ start: '11:00', end: '24:00' }]
+  };
+
+  const reservationHours = {
+    0: [{ start: '11:00', end: '12:00' }],
+    1: [{ start: '11:00', end: '12:00' }],
+    2: [{ start: '11:00', end: '12:00' }],
+    3: [{ start: '11:00', end: '12:00' }, { start: '17:00', end: '19:00' }],
+    4: [{ start: '11:00', end: '12:00' }, { start: '17:00', end: '19:00' }],
+    5: [{ start: '11:00', end: '12:00' }, { start: '17:00', end: '19:00' }],
+    6: [{ start: '11:00', end: '12:00' }, { start: '17:00', end: '19:00' }]
   };
 
   function padTime(value) {
@@ -1677,15 +1686,13 @@
     if (closedReservationDates.has(dateString)) return [];
     const today = localDateString();
     const nowMinutes = localMinutes();
-    const intervals = openingHours[dayOfWeek(dateString)] || [];
+    const intervals = reservationHours[dayOfWeek(dateString)] || [];
     const slots = [];
 
     intervals.forEach(interval => {
       const start = minutesFromTime(interval.start);
       const end = minutesFromTime(interval.end);
-      const latestReservation = minutesFromTime(reservationCutoffTime);
-      for (let minute = start; minute < end; minute += 30) {
-        if (minute > latestReservation) break;
+      for (let minute = start; minute <= end; minute += 30) {
         if (dateString === today && minute <= nowMinutes) continue;
         slots.push(timeFromMinutes(minute));
       }

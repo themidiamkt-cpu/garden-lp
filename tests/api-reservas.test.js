@@ -19,8 +19,22 @@ const { getValidSlots } = require('../api/_reservaRules');
 
   const saturdaySlots = getValidSlots('2026-06-20', beforeCutoff);
   assert.ok(saturdaySlots.includes('12:00'));
+  assert.ok(saturdaySlots.includes('17:00'));
+  assert.ok(saturdaySlots.includes('19:00'));
   assert.ok(!saturdaySlots.includes('12:30'));
   assert.ok(!saturdaySlots.includes('13:00'));
+  assert.ok(!saturdaySlots.includes('19:30'));
+
+  ['2026-07-15', '2026-07-16', '2026-07-17', '2026-07-18'].forEach(date => {
+    const slots = getValidSlots(date, beforeCutoff);
+    assert.ok(slots.includes('17:00'));
+    assert.ok(slots.includes('17:30'));
+    assert.ok(slots.includes('18:00'));
+    assert.ok(slots.includes('18:30'));
+    assert.ok(slots.includes('19:00'));
+    assert.ok(!slots.includes('13:00'));
+    assert.ok(!slots.includes('19:30'));
+  });
 
   const afterLimitTime = handler.validateReservation({
     nome: 'Teste Garden',
@@ -32,6 +46,18 @@ const { getValidSlots } = require('../api/_reservaRules');
   }, beforeCutoff);
 
   assert.match(afterLimitTime.error, /horário dentro do funcionamento/i);
+
+  const afternoonReservation = handler.validateReservation({
+    nome: 'Teste Garden',
+    whatsapp: '(19) 99999-9999',
+    data: '2026-07-15',
+    horario: '17:00',
+    pessoas: 2,
+    tracking: {}
+  }, beforeCutoff);
+
+  assert.equal(afternoonReservation.error, undefined);
+  assert.equal(afternoonReservation.data.horario, '17:00');
 
   const closedDateSlots = getValidSlots('2026-06-12', beforeCutoff);
   assert.deepEqual(closedDateSlots, []);

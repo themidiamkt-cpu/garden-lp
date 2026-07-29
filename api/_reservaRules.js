@@ -1,5 +1,4 @@
 const TIMEZONE = 'America/Sao_Paulo';
-const RESERVATION_CUTOFF_TIME = '12:00';
 const CLOSED_DATES = new Set(['2026-06-12', '2026-06-13', '2026-06-19', '2026-06-24', '2026-06-29']);
 
 const OPENING_HOURS = {
@@ -10,6 +9,16 @@ const OPENING_HOURS = {
   4: [{ start: '11:00', end: '15:00' }, { start: '18:00', end: '24:00' }],
   5: [{ start: '11:00', end: '15:00' }, { start: '18:00', end: '24:00' }],
   6: [{ start: '11:00', end: '24:00' }]
+};
+
+const RESERVATION_HOURS = {
+  0: [{ start: '11:00', end: '12:00' }],
+  1: [{ start: '11:00', end: '12:00' }],
+  2: [{ start: '11:00', end: '12:00' }],
+  3: [{ start: '11:00', end: '12:00' }, { start: '17:00', end: '19:00' }],
+  4: [{ start: '11:00', end: '12:00' }, { start: '17:00', end: '19:00' }],
+  5: [{ start: '11:00', end: '12:00' }, { start: '17:00', end: '19:00' }],
+  6: [{ start: '11:00', end: '12:00' }, { start: '17:00', end: '19:00' }]
 };
 
 function padTime(value) {
@@ -65,17 +74,15 @@ function getValidSlots(dateString, now = new Date()) {
   const today = localDateString(now);
   if (dateString < today) return [];
 
-  const intervals = OPENING_HOURS[dayOfWeek(dateString)] || [];
+  const intervals = RESERVATION_HOURS[dayOfWeek(dateString)] || [];
   const currentMinutes = localMinutes(now);
   const slots = [];
 
   intervals.forEach(interval => {
     const start = minutesFromTime(interval.start);
     const end = minutesFromTime(interval.end);
-    const latestReservation = minutesFromTime(RESERVATION_CUTOFF_TIME);
 
-    for (let minute = start; minute < end; minute += 30) {
-      if (minute > latestReservation) break;
+    for (let minute = start; minute <= end; minute += 30) {
       if (dateString === today && minute <= currentMinutes) continue;
       slots.push(timeFromMinutes(minute));
     }
@@ -91,7 +98,7 @@ function isValidSlot(dateString, time, now = new Date()) {
 module.exports = {
   CLOSED_DATES,
   OPENING_HOURS,
-  RESERVATION_CUTOFF_TIME,
+  RESERVATION_HOURS,
   TIMEZONE,
   getValidSlots,
   isValidSlot
