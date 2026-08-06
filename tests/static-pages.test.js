@@ -15,7 +15,9 @@ assert.match(index, /1221948576112799/);
 assert.match(index, /facebook-domain-verification" content="8o9oiql3caamfbcd6g1gr446gaq02t/);
 assert.match(index, /canonical" href="https:\/\/www\.gardengrill\.com\.br\//);
 assert.match(index, /"url": "https:\/\/www\.gardengrill\.com\.br"/);
+assert.match(index, /https:\/\/garden\.tmfood\.com\.br\/cardapio\/garden/);
 assert.doesNotMatch(index, /gardenbar\.com\.br/);
+assert.doesNotMatch(index, /xmenu\.com\.br/);
 
 assert.match(confirmation, /noindex, nofollow/);
 assert.match(confirmation, /AW-721017465\/JK0rCNadwLwcEPm059cC/);
