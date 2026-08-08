@@ -1,5 +1,5 @@
 const TIMEZONE = 'America/Sao_Paulo';
-const CLOSED_DATES = new Set(['2026-06-12', '2026-06-13', '2026-06-19', '2026-06-24', '2026-06-29']);
+const CLOSED_DATES = new Set(['2026-06-12', '2026-06-13', '2026-06-19', '2026-06-24', '2026-06-29', '2026-08-09']);
 
 const OPENING_HOURS = {
   0: [{ start: '11:00', end: '18:00' }],
